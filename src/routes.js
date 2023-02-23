@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Counter from "./components/counter";
+import Movies from "./components/movies";
 import Todos from "./components/todo";
 
 export default function AppRoutes() {
@@ -16,6 +17,9 @@ export default function AppRoutes() {
               <li>
                 <Link to="/counter">Counter</Link>
               </li>
+              <li>
+                <Link to="/movies">Movies</Link>
+              </li>
             </ul>
           </nav>
         </div>
@@ -23,6 +27,7 @@ export default function AppRoutes() {
         <Routes>
           <Route path="/" element={<Todos />} />
           <Route path="/counter" element={<Counter />} />
+          <Route path="/movies" element={<Movies />} />
         </Routes>
       </Router>
     </>

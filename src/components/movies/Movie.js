@@ -1,37 +1,40 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deleteTodo, updateTodo } from "../../features/todo/todoSlice";
+import {
+  useUpdateMovieMutation,
+  useDeleteMovieMutation,
+} from "../../services/jsonServerApi";
 import { deleteIcon, editIcon } from "../../utils/icons";
 
-export const Todo = ({ props }) => {
+const Movie = ({ props }) => {
   const [isEdit, seIsEdit] = useState(false);
-  const [text, setText] = useState(props.text);
+  const [title, setTitle] = useState(props.title);
 
-  const dispatch = useDispatch();
+  const [updateMovie, { isLoading }] = useUpdateMovieMutation();
+  const [deleteMovie] = useDeleteMovieMutation();
 
-  const deleteTodoHandler = (todoId) => {
-    dispatch(deleteTodo(todoId));
-  };
-
-  const updateTodoHandler = (event) => {
+  const updateMovieHandler = (event) => {
     event.preventDefault();
-    const todo = {
+    const movie = {
       id: props.id,
-      text: text,
+      title,
     };
-    dispatch(updateTodo(todo));
+    updateMovie(movie);
     seIsEdit(false);
   };
 
+  const deleteMovieHandler = (movieId) => {
+    deleteMovie(movieId);
+  };
+
   return (
-    <>
+    <div>
       {isEdit ? (
         <div>
-          <form onSubmit={updateTodoHandler}>
+          <form onSubmit={updateMovieHandler}>
             <input
               type={"text"}
-              value={text}
-              onChange={(event) => setText(event.target.value)}
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
             />
             <button
               className="btn btn-edit"
@@ -41,13 +44,13 @@ export const Todo = ({ props }) => {
               }}
               type="submit"
             >
-              Update todo
+              {isLoading ? "Loading..." : "Update Movie"}
             </button>
           </form>
         </div>
       ) : (
         <>
-          <span>{props.text}</span>
+          <span>{props.title}</span>
           <button
             className="btn btn-edit"
             onClick={() => seIsEdit((prev) => !prev)}
@@ -56,12 +59,14 @@ export const Todo = ({ props }) => {
           </button>
           <button
             className="btn btn-delete"
-            onClick={() => deleteTodoHandler(props.id)}
+            onClick={() => deleteMovieHandler(props.id)}
           >
             {deleteIcon}
           </button>
         </>
       )}
-    </>
+    </div>
   );
 };
+
+export default Movie;

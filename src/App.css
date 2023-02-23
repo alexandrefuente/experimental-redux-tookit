@@ -68,3 +68,8 @@
   padding: 3px 15px;
   margin-left: 5px;
 }
+
+.moviesList {
+  list-style: none;
+  display: inline-block;
+}
